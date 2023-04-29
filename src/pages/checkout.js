@@ -1,89 +1,126 @@
-import Header from '@/components/header'
-import React from 'react'
+import Header from '@/components/header';
+import Link from 'next/link';
+import React, { useState } from 'react'
 
 const checkout = () => {
+
+    const [dropdown1, setDropdown1] = useState(false);
+    const [dropdown2, setDropdown2] = useState(false);
+    const [dropdown3, setDropdown3] = useState(false);
+    const [changeText1, setChangeText1] = useState("İl");
+
+    const HandleText1 = (e) => {
+        setChangeText1(e);
+        setDropdown1(false);
+    };
+
     return (
         <>
             <Header />
-            <main className='container m-auto border-t border-grey-dark pt-10 sm:pt-12'>
-
-                <section className='flex flex-col-reverse justify-between pb-16 sm:pb-20 lg:flex-row lg:pb-24'>
-                    <div className='lg:w-3/5'>
-
-                        <div className="pt-8">
-                            <div className="hidden sm:block">
-                                <div className="flex justify-between border-b border-grey-darker">
-                                    <div className="w-1/2 pl-8 pb-2 sm:pl-12 lg:w-3/5 xl:w-1/2">
-                                        <span className="font-hkbold text-sm uppercase text-secondary">Ürün Adı</span>
-                                    </div>
-                                    <div className="w-1/4 pb-2 text-center sm:mr-2 sm:w-1/6 md:mr-18 lg:mr-12 lg:w-1/5 xl:mr-18 xl:w-1/4">
-                                        <span className="font-hkbold text-sm uppercase text-secondary">Ürün Adetİ</span>
-                                    </div>
-                                    <div className="w-1/4 pb-2 text-right md:pr-10 lg:w-1/5 xl:w-1/4">
-                                        <span className="font-hkbold text-sm uppercase text-secondary">Fİyat</span>
-                                    </div>
-                                </div>
+            <div className="overflow-y-hidden">
+                <div className="flex justify-center items-center 2xl:container 2xl:mx-auto lg:py-16 md:py-12 py-9 px-4 md:px-6 lg:px-20 xl:px-44 ">
+                    <div className="flex w-full sm:w-9/12 lg:w-full flex-col lg:flex-row justify-center items-center lg:space-x-10 2xl:space-x-36 space-y-12 lg:space-y-0">
+                        <div className="flex w-full  flex-col justify-start items-start">
+                            <div className>
+                                <p className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Ödeme</p>
                             </div>
-
-                            <div className="mb-0 hidden flex-row items-center justify-between border-b border-grey-dark py-3 md:flex">
-                                <i className="bx bx-x mr-6 cursor-pointer text-2xl text-grey-darkest sm:text-3xl"></i>
-                                <div className="flex w-1/2 flex-row items-center border-b-0 border-grey-dark pt-0 pb-0 text-left lg:w-3/5 xl:w-1/2">
-                                    <div className="relative mx-0 w-20 pr-0">
-                                        <div className="flex h-20 items-center justify-center rounded">
-                                            <div className="aspect-w-1 aspect-h-1 w-full">
-                                                <img src="/assets/img/unlicensed/shoes-3.png" alt="product image" className="object-cover" />
+                            <div className="mt-2">
+                                <Link href="/cart" className="text-base leading-4 underline  hover:text-gray-800 text-gray-600">
+                                    Sepete dön
+                                </Link>
+                            </div>
+                            <div className="mt-12">
+                                <p className="text-xl font-semibold leading-5 text-gray-800">Ödeme Detayları</p>
+                            </div>
+                            <div className="mt-8 flex flex-col justify-start items-start w-full space-y-8 ">
+                                <input className="px-2 focus:outline-none focus:ring-2 focus:ring-gray-500 border-b border-gray-200 leading-4 text-base placeholder-gray-600 py-4 w-full" type="text" placeholder="Ad" />
+                                <input className="px-2 focus:outline-none focus:ring-2 focus:ring-gray-500 border-b border-gray-200 leading-4 text-base placeholder-gray-600 py-4 w-full" type="text" placeholder="Soyad" />
+                                <input className="px-2 focus:outline-none focus:ring-2 focus:ring-gray-500 border-b border-gray-200 leading-4 text-base placeholder-gray-600 py-4 w-full" type="text" placeholder="Adres" />
+                                <div className="flex justify-between flex-col sm:flex-row w-full items-start space-y-8 sm:space-y-0 sm:space-x-8">
+                                    <div className="relative w-full">
+                                        <p id="button1" className=" px-2 border-b border-gray-200 text-left leading-4 text-base text-gray-600 py-4 w-full">
+                                            {changeText1}
+                                        </p>
+                                        <button onClick={() => setDropdown1(!dropdown1)} className="focus:outline-none focus:ring-2 focus:ring-gray-500 rounded-full cursor-pointer absolute bottom-4 right-0">
+                                            <svg id="close" className={` transform ${dropdown1 ? "rotate-180" : ""}  `} width={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 6L8 10L4 6" stroke="#4B5563" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                        </button>
+                                        <div className={`shadow absolute z-10 bg-white top-10  w-full mt-3 ${dropdown1 ? "" : "hidden"}`}>
+                                            <div className="flex flex-col  w-full">
+                                                {["İstanbul", "Ankara", "İzmir"].map((item, index) => (
+                                                    <p tabIndex={0} onClick={() => HandleText1(item)} className="focus:outline-none cursor-pointer px-3 hover:text-white hover:bg-gray-800 focus:bg-gray-800 focus:text-white text-left  text-base text-gray-600 py-2 w-full">
+                                                        {item}
+                                                    </p>
+                                                ))}
                                             </div>
                                         </div>
                                     </div>
-                                    <span className="mt-2 ml-4 font-hk text-base text-secondary">classNameic Beige</span>
-                                </div>
-                                <div className="w-full border-grey-dark pb-0 text-center sm:w-1/5 xl:w-1/4">
-                                    <div className="mx-auto mr-8 xl:mr-4">
-                                        <div className="flex justify-center" x-data="{ productQuantity: 1 }">
-                                            <input type="number" id="quantity-form-desktop" className="form-input border w-16 py-2 px-2 text-center" min="1" value={1} />
-                                            {/* <div className="flex flex-col">
-                                                <span className="flex-1 cursor-pointer rounded-tr border border-l-0 border-grey-darker bg-white px-1"><i className="bx bxs-up-arrow pointer-events-none text-xs text-primary"></i></span>
-                                                <span className="flex-1 cursor-pointer rounded-br border border-t-0 border-l-0 border-grey-darker bg-white px-1">1<i className="bx bxs-down-arrow pointer-events-none text-xs text-primary"></i></span>
-                                            </div> */}
+                                    <div className="relative w-full">
+                                        <p id="button2" className=" px-2 border-b border-gray-200 text-left leading-4 text-base text-gray-600 py-4 w-full">
+                                            İlçe
+                                            <span className="text-gray-400"> (optional)</span>
+                                        </p>
+                                        <button onClick={() => setDropdown2(!dropdown2)} className="focus:outline-none  focus:ring-2 focus:ring-gray-500 rounded-full cursor-pointer absolute bottom-4 right-0">
+                                            <svg id="close2" className={` transform ${dropdown2 ? "rotate-180" : ""}  `} width={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 6L8 10L4 6" stroke="#4B5563" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                        </button>
+                                        <div className={`shadow absolute z-10 bg-white top-10  w-full mt-3 ${dropdown2 ? "" : "hidden"}`}>
+                                            <div className="flex flex-col  w-full">
+                                                {/* {["İstanbul", "Ankara", "İzmir"].map((item, index) => (
+                                                    <p tabIndex={0} onclick="changeButton2('London')" className="focus:outline-none cursor-pointer px-3 hover:text-white hover:bg-gray-800 focus:bg-gray-800 focus:text-white text-left  text-base text-gray-600 py-2 w-full">
+                                                        London
+                                                    </p>
+                                                ))} */}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="w-1/4 pr-10 pb-4 text-right lg:w-1/5 xl:w-1/4 xl:pr-10">
-                                    <span className="font-hk text-secondary">1045 TL</span>
+                                <div className="flex justify-between flex-col sm:flex-row w-full items-start space-y-8 sm:space-y-0 sm:space-x-8">
+                                    <div className="w-full">
+                                        <input className="focus:outline-none focus:ring-2 focus:ring-gray-500 px-2 border-b border-gray-200 leading-4 text-base placeholder-gray-600 pt-4 pb-3   w-full" type="text" placeholder="Posta Kodu" />
+                                    </div>
                                 </div>
+                                <input className="focus:outline-none focus:ring-2 focus:ring-gray-500 px-2 border-b border-gray-200 leading-4 text-base placeholder-gray-600 py-4   w-full" type="text" placeholder="Telefon Numarası" />
                             </div>
-
-                        </div>
-                    </div>
-                    <div class="mx-auto mt-16 sm:w-2/3 md:w-full lg:mx-0 lg:mt-0 lg:w-1/3">
-                        <div class="bg-grey-light py-8 px-8">
-                            <h4 class="font-hkbold pb-3 text-center text-2xl text-secondary sm:text-left">
-                                Sepet
-                            </h4>
-                            <div class="mb-12 pt-4">
-                                <p class="font-hkbold pt-1 pb-2 text-secondary">Sepet toplamı</p>
-                                <div class="flex justify-between border-b border-grey-darker pb-1">
-                                    <span class="font-hk text-secondary">Alt toplam</span>
-                                    <span class="font-hk text-secondary">264 TL</span>
-                                </div>
-                                <div class="flex justify-between border-b border-grey-darker pt-2 pb-1">
-                                    <span class="font-hk text-secondary">KDV vergisi (%18)</span>
-                                    <span class="font-hk text-secondary">36 TL</span>
-                                </div>
-                                <div class="flex justify-between pt-3">
-                                    <span class="font-hkbold text-secondary">Toplam</span>
-                                    <span class="font-hkbold text-secondary">300 TL</span>
-                                </div>
-                            </div>
-                            <div class="flex justify-center">
-                                <button className="text-center w-full px-6 py-3 mb-3 text-lg text-white bg-indigo-600 rounded-md sm:mb-0 hover:bg-indigo-700">
-                                    Sepeti Onayla
-                                </button>
+                            <button className="focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 mt-8 text-base font-medium focus:ring-2 focus:ring-ocus:ring-gray-800 leading-4 hover:bg-black py-4 w-full md:w-4/12 lg:w-full text-white bg-gray-800">Ödeme Yap</button>
+                            <div className="mt-4 flex justify-start items-center w-full">
+                                <Link href="/cart" className="text-base leading-4 underline focus:outline-none focus:text-gray-500  hover:text-gray-800 text-gray-600">
+                                    Sepete dön
+                                </Link>
                             </div>
                         </div>
+                        <div className="flex flex-col justify-start items-start bg-gray-50 w-full p-6 md:p-14">
+                            <div>
+                                <h1 className="text-2xl font-semibold leading-6 text-gray-800">Sipariş Özeti</h1>
+                            </div>
+                            <div className="flex mt-7 flex-col items-end w-full space-y-6">
+                                <div className="flex justify-between w-full items-center">
+                                    <p className="text-lg leading-4 text-gray-600">Toplam ürün</p>
+                                    <p className="text-lg font-semibold leading-4 text-gray-600">2</p>
+                                </div>
+                                <div className="flex justify-between w-full items-center">
+                                    <p className="text-lg leading-4 text-gray-600">Alt Tutar</p>
+                                    <p className="text-lg font-semibold leading-4 text-gray-600">2790 TL</p>
+                                </div>
+                                <div className="flex justify-between w-full items-center">
+                                    <p className="text-lg leading-4 text-gray-600">KDV (%18)</p>
+                                    <p className="text-lg font-semibold leading-4 text-gray-600">90 TL</p>
+                                </div>
+                                {/* <div className="flex justify-between w-full items-center">
+                                    <p className="text-lg leading-4 text-gray-600">Toplam Tutar</p>
+                                    <p className="text-lg font-semibold leading-4 text-gray-600">2880 TL</p>
+                                </div> */}
+                            </div>
+                            <div className="flex justify-between w-full items-center mt-32">
+                                <p className="text-xl font-semibold leading-4 text-gray-800">Toplam Tutar </p>
+                                <p className="text-lg font-semibold leading-4 text-gray-800">2900 TL</p>
+                            </div>
+                        </div>
                     </div>
-                </section>
-            </main>
+                </div>
+            </div>
         </>
     )
 }

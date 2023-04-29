@@ -1,9 +1,10 @@
+import Link from 'next/link'
 import React from 'react'
 
 const Product = () => {
     return (
         <div className="w-full grow-0 xl:w-[30%] p-6 flex flex-col border m-2 hover:shadow-lg hover group">
-            <a href="#">
+            <Link href={"/product/" + "id"}>
                 <img className="hover:grow" src="/kazak.jpeg" />
                 <div className="flex items-center justify-between pt-6">
                     <div>
@@ -33,7 +34,7 @@ const Product = () => {
                     </svg>
                 </div>
                 <p className="pt-1 text-gray-900">120 TL</p> */}
-            </a>
+            </Link>
         </div>
     )
 }
