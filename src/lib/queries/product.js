@@ -1,8 +1,25 @@
-const { ProductModel } = require("../models/product");
+import CategoryModel from "../models/category";
+import { ProductModel } from "../models/product";
+import ProductImageModel from "../models/productImage";
 
-const getProducts = async () => {
-    const products = await ProductModel.findAll()
-    console.log(products)
+
+export const getProducts = async () => {
+    const products = await ProductModel.findAll({
+        include: [
+            CategoryModel,
+            ProductImageModel
+        ]
+    })
+    return products.map((item) => item.toJSON())
 }
 
-getProducts()
+
+export const getProductById = async (id) => {
+    const product = await ProductModel.findByPk(id, {
+        include: [
+            CategoryModel,
+            ProductImageModel
+        ]
+    })
+    return product.toJSON()
+}

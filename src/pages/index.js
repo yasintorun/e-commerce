@@ -1,14 +1,22 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
-import Header from '@/components/header'
-import HomeSlider from '@/components/HomeSlider'
+import HomeCategoryList from '@/components/HomeCategoryList'
 import Product from '@/components/Product'
+import Header from '@/components/header'
+import { getProducts } from '@/lib/queries/product'
+import { Inter } from 'next/font/google'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+export default function Home({ products }) {
+  console.log(products)
+  const router = useRouter()
+
+  const filteredProducts = useMemo(() =>
+      products.filter(item => item.category.id == router.query?.category || !router.query?.category),
+    [router.query?.category])
+
   return (
     <>
       <Head>
@@ -25,18 +33,11 @@ export default function Home() {
           <div class="container mx-auto">
             <div className='md:flex'>
               <aside class="sticky top-0 min-w-[300px]">
-                <ul>
-                  {["Askeri Ayakkabılar", "Bröveler", "Gömlek", "İşbaşı kepi", "İşbaşı",
-                    "Kazak", "Kokart", "Rütbeler", "Şerit Rozeti", "Üniformalar"].map((item, i) => (
-                      <li className='border-b border-gray-200'>
-                        <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">{item}</a>
-                      </li>
-                    ))}
-                </ul>
+                <HomeCategoryList />
               </aside>
               <div className='flex items-center flex-wrap pt-4 pb-12'>
-                {Array.from({ length: 20 }).map((item, i) => (
-                  <Product key={i} />
+                {filteredProducts.map((item, i) => (
+                  <Product key={i} product={item} />
                 ))}
               </div>
             </div>
@@ -45,4 +46,14 @@ export default function Home() {
       </main>
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const products = await getProducts()
+  console.log(products)
+  return {
+    props: {
+      products
+    },
+  }
 }

@@ -18,7 +18,15 @@ const ProductModel = DbContext.define("products", {
     price: {
         type: DataTypes.DECIMAL,
     },
-});
+    categoryId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'categories',
+            key: 'id'
+        }
+    }
+}, {createdAt: false, updatedAt: false});
 
 DbContext.sync().then(() => {
     console.log('Product table created successfully!');

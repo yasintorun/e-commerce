@@ -1,7 +1,9 @@
 import Header from '@/components/header'
+import { getProductById } from '@/lib/queries/product'
 import React from 'react'
 
-const ProductDetail = () => {
+const ProductDetail = ({ product }) => {
+    console.log(product)
     return (
         <>
             <Header />
@@ -15,16 +17,16 @@ const ProductDetail = () => {
                                 <path stroke-linecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                             </svg>
                         </span>
-                        <a href="#" className="hover:underline hover:text-gray-600">Kategori</a>
+                        <a href="#" className="hover:underline hover:text-gray-600">{product.category.name}</a>
                     </div>
                 </div>
                 <section class="text-gray-700 body-font overflow-hidden bg-white">
                     <div class="container px-5 py-24 mx-auto">
                         <div class="lg:w-4/5 mx-auto flex flex-wrap">
-                            <img alt="ecommerce" class="lg:w-1/2 w-full object-cover object-center rounded border border-gray-200" src="https://www.whitmorerarebooks.com/pictures/medium/2465.jpg" />
+                            <img alt="ecommerce" class="lg:w-1/2 h-[500px] w-full object-contain object-center rounded border border-gray-200" src={product.product_images[0].image} />
                             <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-                                <h2 class="text-sm title-font text-gray-500 tracking-widest">Kategori</h2>
-                                <h1 class="text-gray-900 text-3xl title-font font-medium mb-1">Siyah Kazak</h1>
+                                <h2 class="text-sm title-font text-gray-500 tracking-widest">{product.category.name}</h2>
+                                <h1 class="text-gray-900 text-3xl title-font font-medium mb-1">{product.name}</h1>
                                 <div class="flex mb-4">
                                     <span class="flex items-center">
                                         <div className="flex items-center">
@@ -34,11 +36,11 @@ const ProductDetail = () => {
                                             <i className="fa-solid fa-star text-red-500"></i>
                                             <i className="fa-solid fa-star text-red-500"></i>
                                         </div>
-                                        <span class="text-gray-600 ml-3">4 Değerlendirme</span>
+                                        <span class="text-gray-600 ml-3">{product.name.length} Değerlendirme</span>
                                     </span>
                                 </div>
                                 <p class="leading-relaxed">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum, quae ipsum adipisci ipsam sunt molestias aperiam tempore quo perferendis veritatis illo, accusamus id corrupti consequuntur cum vitae nulla blanditiis nemo dignissimos eaque recusandae facere consequatur! Porro amet enim officia nihil rerum quis, accusamus, sit ut itaque, rem voluptates aliquid tenetur esse! Rerum commodi, in fugiat, quaerat assumenda ab libero laudantium maiores repellat consequuntur dolor minus omnis? Sequi perferendis id facilis minus! Autem, atque optio modi nihil quasi asperiores culpa rerum, quo, dicta consectetur in hic enim quam. Eius sint cumque consequuntur voluptates officia, optio nisi fuga ad enim asperiores! Consequatur?
+                                    {product.description}
                                 </p>
                                 <div class="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
                                     <div class="flex">
@@ -64,7 +66,7 @@ const ProductDetail = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <span class="title-font font-medium text-2xl text-gray-900">120 TL</span>
+                                <span class="title-font font-medium text-2xl text-gray-900">{product.price} TL</span>
                                 <div class="flex mt-2">
                                     {/* <button class="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">Button</button> */}
                                     <button class="w-full flex justify-center flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">
@@ -84,5 +86,17 @@ const ProductDetail = () => {
         </>
     )
 }
+
+
+export async function getServerSideProps(context) {
+    const product = await getProductById(context.params.id)
+
+    return {
+        props: {
+            product
+        },
+    }
+}
+
 
 export default ProductDetail
