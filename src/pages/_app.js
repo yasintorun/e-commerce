@@ -15,7 +15,6 @@ function App({ Component, pageProps }) {
     fetch("/api/cart?userId=" + userId)
       .then(res => res.json())
       .then(cartItems => {
-        console.log(cartItems)
         dispatch(setCartItemsAction(cartItems));
       })
   }, [userId]);

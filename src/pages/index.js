@@ -10,7 +10,6 @@ import { useEffect, useMemo } from 'react'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home({ products }) {
-  console.log(products)
   const router = useRouter()
 
   const filteredProducts = useMemo(() =>
@@ -50,7 +49,6 @@ export default function Home({ products }) {
 
 export async function getServerSideProps(context) {
   const products = await getProducts()
-  console.log(products)
   return {
     props: {
       products

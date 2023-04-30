@@ -8,7 +8,6 @@ export default function handler(req, res) {
         })
     }
     else if(req.method == 'GET'){
-        console.log("QUERY => ", req.query)
         getCartItems(req.query.userId).then((items) => {
             res.status(200).json(items);
         })
