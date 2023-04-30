@@ -9,10 +9,15 @@ const slice = createSlice({
     },
     reducers: {
         addToCartAction: (state, action) => {
-            state.cartItems = [...state.cartItems, action.payload];
+            const item = action.payload;
+            const existingItem = state.cartItems.find(x => x.product.id === item.product.id);
+            if (existingItem) {
+                state.cartItems = state.cartItems.filter(x => x.product.id !== existingItem.product.id);
+            }
+            state.cartItems = [...state.cartItems, {...item, quantity: item.count * item.product.price}];
         },
         setCartItemsAction: (state, action) => {
-            state.cartItems = action.payload;
+            state.cartItems = action.payload.map(x => ({ ...x, quantity: x.count * x.product.price }))
         }
     },
     extraReducers: {

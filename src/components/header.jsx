@@ -21,7 +21,7 @@ const Header = () => {
                     <nav>
                         <ul className="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0">
                             <li><Link className="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="/">Ürünler</Link></li>
-                            <li><Link className="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="#">Hakkımızda</Link></li>
+                            <li><Link className="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="/about">Hakkımızda</Link></li>
                         </ul>
                     </nav>
                 </div>

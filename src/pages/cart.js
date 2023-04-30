@@ -1,35 +1,68 @@
+import FullScreenLoading from '@/components/FullScreenLoading'
+import Footer from '@/components/footer'
 import Header from '@/components/header'
+import { useAuth } from '@/hooks/useAuth'
 import { useCart } from '@/hooks/useCart'
 import Link from 'next/link'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
+import Swal from 'sweetalert2'
 
 const checkout = () => {
-    const { uniqueCartItems, totalQuantity } = useCart()
+    const { cartItems, totalQuantity, fillCartItems } = useCart()
+    const [loading, setLoading] = useState(false)
+    const { userId } = useAuth()
 
-    // const uniqueCartItems = useMemo(() => {
-    //     return cartItems.reduce((acc, item) => {
-    //         const existingItem = acc.find(_item => _item.product.id == item.product.id)
-    //         if (existingItem) {
-    //             existingItem.quantity += parseInt(item.product.price)
-    //             return acc
-    //         }
-    //         const count = cartItems.filter(_item => _item.product.id == item.product.id).length
-    //         const quantity = parseInt(item.product.price)
-    //         return [...acc, { ...item, count, quantity }]
-    //     }, [])
-    // }, [cartItems])
+    const handleDeleteCartItem = (cartItem) => {
+        Swal.fire({
+            title: 'Uyarı',
+            text: `${cartItem.product.name} ürününü silmek istediğinize emin misiniz?`,
+            icon: 'warning',
+            confirmButtonText: 'Evet Sil!',
+            cancelButtonText: 'İptal',
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch("/api/cart?id=" + cartItem.id, {
+                    method: "DELETE",
+                })
+                    .then(res => res.json())
+                    .then(_ => {
+                        fillCartItems();
+                        Swal.fire({
+                            title: 'Silindi!',
+                            text: cartItem.product.name + ' ürünü sepetinizden silindi.',
+                            icon: 'success',
+                            confirmButtonText: 'Tamam'
+                        })
+                    })
+            }
+        })
+    }
 
-    // const totalQuantity = useMemo(() => {
-    //     return uniqueCartItems.reduce((acc, item) => {
-    //         return acc + item.quantity
-    //     }, 0)
-    // }, [uniqueCartItems])
+    const handleUpdateCount = (cartItem, increase) => {
+        setLoading(true)
+        if(cartItem.count == 1 && increase < 0) return;
+        fetch("/api/cart/", {
+            body: JSON.stringify({
+                userId: userId,
+                productId: cartItem.productId,
+                increase
+            }),
+            method: "PUT",
+        })
+            .then(res => res.json())
+            .then(item => {
+                fillCartItems().finally(() => {
+                    setLoading(false)
+                });
+            })
+    }
 
     return (
         <>
+            <FullScreenLoading loading={loading} />
             <Header />
             <main className='container m-auto border-t border-grey-dark pt-10 sm:pt-12'>
-
                 <section className='flex flex-col-reverse justify-between pb-16 sm:pb-20 lg:flex-row lg:pb-24'>
                     <div className='lg:w-3/5'>
                         <div class="overflow-x-auto">
@@ -44,7 +77,7 @@ const checkout = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {uniqueCartItems.map((item, i) => (
+                                    {cartItems.map((item, i) => (
                                         <tr>
                                             <td class="px-4 py-2">
                                                 <div className="flex h-20 overflow-hidden items-center justify-center rounded">
@@ -52,15 +85,23 @@ const checkout = () => {
                                                         <img src={item.product.product_images[0].image} alt="product image" className="object-contain" />
                                                     </div>
                                                 </div>
-                                                {/* <img src={item.product.product_images[0].image} alt="" /> */}
                                             </td>
                                             <td class="px-4 py-2" colSpan={2}>{item.product.name}</td>
                                             <td class="px-4 py-2">
-                                                <input type="number" className="form-input border w-16 p-2 text-center" disabled min="1" value={item.count} />
+                                                <div className='flex items-center justify-center space-x-2'>
+                                                    <button onClick={() => handleUpdateCount(item, -1)} disabled={item.count == 1} className="bg-slate-700 hover:bg-slate-950 active:bg-slate-500 text-white rounded px-3 py-1">
+                                                        <i className='fas fa-minus text-xs'></i>
+                                                    </button>
+                                                    <div className='border rounded px-5 py-2 text-lg'>{item.count}</div>
+                                                    {/* <input type="number" className="form-input border w-12 text-center" min="1" defaultValue={item.count} /> */}
+                                                    <button onClick={() => handleUpdateCount(item, 1)}  className='bg-slate-700 hover:bg-slate-950 active:bg-slate-500 text-white rounded px-3 py-1'>
+                                                        <i className='fas fa-plus'></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                             <td class="px-4 py-2">{item.quantity.toFixed(2)} TL</td>
                                             <td class="px-4 py-2">
-                                                <button class="text-red-500 rounded">
+                                                <button onClick={() => handleDeleteCartItem(item)} class="text-red-500 rounded">
                                                     <i className="fas fa-trash"></i>
                                                 </button>
                                             </td>
@@ -99,6 +140,7 @@ const checkout = () => {
                     </div>
                 </section>
             </main>
+            <Footer />
         </>
     )
 }

@@ -1,4 +1,4 @@
-import { addToCartAction } from "@/store/cartStore";
+import { addToCartAction, setCartItemsAction } from "@/store/cartStore";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "./useAuth";
 import { toast } from "react-toastify";
@@ -27,31 +27,24 @@ export const useCart = () => {
             success: "Ürün sepete eklendi",
         }, { autoClose: 1500 })
     }
-
-    const uniqueCartItems = useMemo(() => {
-        console.log(cartItems)
-        return cartItems.reduce((acc, item) => {
-            const existingItem = acc.find(_item => _item.product.id == item.product.id)
-            if (existingItem) {
-                existingItem.quantity += parseInt(item.product.price)
-                return acc
-            }
-            const count = cartItems.filter(_item => _item.product.id == item.product.id).length
-            const quantity = parseInt(item.product.price)
-            return [...acc, { ...item, count, quantity }]
-        }, [])
-    }, [cartItems])
+    const fillCartItems = async () => {
+        await fetch("/api/cart?userId=" + userId)
+            .then(res => res.json())
+            .then(cartItems => {
+                dispatch(setCartItemsAction(cartItems));
+            })
+    }
 
     const totalQuantity = useMemo(() => {
-        return uniqueCartItems.reduce((acc, item) => {
+        return cartItems.reduce((acc, item) => {
             return acc + item.quantity
         }, 0)
-    }, [uniqueCartItems])
+    }, [cartItems])
 
     return {
         cartItems,
-        uniqueCartItems,
         totalQuantity,
-        addToCart
+        addToCart,
+        fillCartItems
     }
 }

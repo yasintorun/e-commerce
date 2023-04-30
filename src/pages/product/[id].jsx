@@ -1,3 +1,4 @@
+import Footer from '@/components/footer'
 import Header from '@/components/header'
 import { useCart } from '@/hooks/useCart'
 import { getProductById } from '@/lib/queries/product'
@@ -89,6 +90,7 @@ const ProductDetail = ({ product }) => {
                     </div>
                 </section>
             </div>
+            <Footer /> 
         </>
     )
 }

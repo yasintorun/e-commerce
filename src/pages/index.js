@@ -1,5 +1,6 @@
 import HomeCategoryList from '@/components/HomeCategoryList'
 import Product from '@/components/Product'
+import Footer from '@/components/footer'
 import Header from '@/components/header'
 import { getProducts } from '@/lib/queries/product'
 import { Inter } from 'next/font/google'
@@ -13,7 +14,7 @@ export default function Home({ products }) {
   const router = useRouter()
 
   const filteredProducts = useMemo(() =>
-      products.filter(item => item.category.id == router.query?.category || !router.query?.category),
+    products.filter(item => item.category.id == router.query?.category || !router.query?.category),
     [router.query?.category])
 
   return (
@@ -43,6 +44,7 @@ export default function Home({ products }) {
           </div>
         </section>
       </main>
+      <Footer />
     </>
   )
 }

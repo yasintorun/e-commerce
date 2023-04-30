@@ -42,7 +42,7 @@ const HomeCategoryList = () => {
                                     <li key={item.id} className='border-b border-gray-200'>
                                         <a
                                             onClick={() => handleCategoryPress(item)}
-                                            className={`flex items-center justify-between p-2 text-gray-900 rounded-lg cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 ${item.id == router.query.category ? "bg-gray-200" : ""}`}
+                                            className={`flex items-center justify-between p-2 text-gray-900 rounded-lg cursor-pointer hover:bg-gray-100 ${item.id == router.query.category ? "bg-gray-200" : ""}`}
                                         >
                                             {item.name}
                                             <span className='text-right'>

@@ -1,38 +1,35 @@
 import { DataTypes } from "sequelize";
 import { DbContext } from "../db";
-import { ProductModel } from "./product";
 
-const CartItemModel = DbContext.define("cart_items", {
+const OrderModel = DbContext.define("orders", {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    count: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 1
-    },
     customerId: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    productId: {
+    amount: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-            model: ProductModel,
-            key: 'id'
-        }
+    },
+    address: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    date: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: new Date()
     }
-});
-
-CartItemModel.belongsTo(ProductModel, { foreignKey: 'productId' });
+}, {createdAt: false, updatedAt: false});
 
 DbContext.sync().then(() => {
-    console.log('Cart Item table created successfully!');
+    console.log('Order table created successfully!');
 }).catch((error) => {
     console.error('Unable to create table : ', error);
 });
 
-export default CartItemModel;
+export default OrderModel;
