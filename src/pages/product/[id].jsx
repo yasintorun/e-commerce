@@ -1,9 +1,15 @@
 import Header from '@/components/header'
+import { useCart } from '@/hooks/useCart'
 import { getProductById } from '@/lib/queries/product'
+import Link from 'next/link'
 import React from 'react'
 
 const ProductDetail = ({ product }) => {
-    console.log(product)
+    const { addToCart } = useCart()
+    const handleAddToCart = (e) => {
+        e.preventDefault()
+        addToCart(product.id)
+    }
     return (
         <>
             <Header />
@@ -11,13 +17,13 @@ const ProductDetail = ({ product }) => {
 
                 <div className="mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center space-x-2 text-gray-400 text-sm">
-                        <a href="#" className="hover:underline hover:text-gray-600">Ürünler</a>
+                        <Link href="/" className="hover:underline hover:text-gray-600">Ürünler</Link>
                         <span>
                             <svg className="h-5 w-5 leading-none text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                             </svg>
                         </span>
-                        <a href="#" className="hover:underline hover:text-gray-600">{product.category.name}</a>
+                        <Link href={"/?category=" + product.category.id} className="hover:underline hover:text-gray-600">{product.category.name}</Link>
                     </div>
                 </div>
                 <section class="text-gray-700 body-font overflow-hidden bg-white">
@@ -69,7 +75,7 @@ const ProductDetail = ({ product }) => {
                                 <span class="title-font font-medium text-2xl text-gray-900">{product.price} TL</span>
                                 <div class="flex mt-2">
                                     {/* <button class="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">Button</button> */}
-                                    <button class="w-full flex justify-center flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">
+                                    <button onClick={handleAddToCart} class="w-full flex justify-center flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">
                                         Sepete Ekle
                                     </button>
                                     <button class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">

@@ -1,7 +1,13 @@
+import { useCart } from '@/hooks/useCart'
 import Link from 'next/link'
 import React from 'react'
 
 const Product = ({ product }) => {
+    const { addToCart } = useCart()
+    const handleAddToCart = (e) => {
+        e.preventDefault()
+        addToCart(product.id)
+    }
     return (
         <div className="w-full grow-0 xl:w-[30%] p-2 flex flex-col border m-2 hover:shadow-lg hover group">
             <Link href={"/product/" + product.id}>
@@ -24,7 +30,7 @@ const Product = ({ product }) => {
                     </div>
                 </div>
                 <span className="font-hk text-xl font-bold text-primary pt-5">{product.price} TL</span>
-                <button className="opacity-0 group-hover:opacity-100 text-center w-full px-2 py-1 mb-3 text-sm text-white bg-red-500 rounded-md sm:mb-0 hover:bg-red-700">
+                <button onClick={handleAddToCart} className="opacity-0 group-hover:opacity-100 text-center w-full px-2 py-1 mb-3 text-sm text-white bg-red-500 rounded-md sm:mb-0 hover:bg-red-700">
                     Sepete Ekle
                 </button>
             </Link>

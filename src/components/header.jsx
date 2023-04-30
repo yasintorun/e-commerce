@@ -1,7 +1,10 @@
+import { useCart } from '@/hooks/useCart'
 import Link from 'next/link'
 import React from 'react'
 
 const Header = () => {
+    const { cartItems } = useCart()
+    console.log(cartItems)
     return (
         <nav id="header" className="w-full sticky z-50 top-0 py-1">
             <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-6 py-3">
@@ -15,7 +18,7 @@ const Header = () => {
                 <input className="hidden" type="checkbox" id="menu-toggle" />
 
                 <div className="hidden md:flex md:items-center md:w-auto w-full order-3 md:orde1r-1" id="menu">
-                    
+
                     <nav>
                         <ul className="md:flex items-center justify-between text-base text-gray-700 pt-4 md:pt-0">
                             <li><Link className="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="/">Ürünler</Link></li>
@@ -42,12 +45,20 @@ const Header = () => {
                         </svg>
                     </a>
 
-                    <Link href="/cart" className="pl-3 inline-block no-underline hover:text-black">
+                    <Link href="/cart" className="relative pl-3 inline-block no-underline hover:text-black">
                         <svg className="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path d="M21,7H7.462L5.91,3.586C5.748,3.229,5.392,3,5,3H2v2h2.356L9.09,15.414C9.252,15.771,9.608,16,10,16h8 c0.4,0,0.762-0.238,0.919-0.606l3-7c0.133-0.309,0.101-0.663-0.084-0.944C21.649,7.169,21.336,7,21,7z M17.341,14h-6.697L8.371,9 h11.112L17.341,14z" />
                             <circle cx="10.5" cy="18.5" r="1.5" />
                             <circle cx="17.5" cy="18.5" r="1.5" />
                         </svg>
+                        <div className='absolute top-[-10px] right-[-10px]'>
+                            <span class="relative flex h-5 w-5">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span class="relative flex items-center justify-center text-white rounded-full h-5 w-5 bg-red-500 text-xs text-center">
+                                    {cartItems.length}
+                                </span>
+                            </span>
+                        </div>
                     </Link>
 
                 </div>
