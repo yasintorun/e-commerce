@@ -8,7 +8,18 @@ export const addToCart = async ({ productId, userId }) => {
         productId,
         customerId: userId
     });
-    return cartItem.toJSON();
+    const addedItem = await CartItemModel.findByPk(cartItem.dataValues.id, {
+        include: [
+            {
+                model: ProductModel,
+                include: [
+                    ProductImageModel,
+                    CategoryModel
+                ]
+            }
+        ]
+    })
+    return addedItem.toJSON();
 }
 
 export const getCartItems = async (userId) => {

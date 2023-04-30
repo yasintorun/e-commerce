@@ -1,9 +1,10 @@
 import Header from '@/components/header';
+import { useCart } from '@/hooks/useCart';
 import Link from 'next/link';
 import React, { useState } from 'react'
 
 const checkout = () => {
-
+    const { totalQuantity, cartItems } = useCart()
     const [dropdown1, setDropdown1] = useState(false);
     const [dropdown2, setDropdown2] = useState(false);
     const [dropdown3, setDropdown3] = useState(false);
@@ -98,15 +99,15 @@ const checkout = () => {
                             <div className="flex mt-7 flex-col items-end w-full space-y-6">
                                 <div className="flex justify-between w-full items-center">
                                     <p className="text-lg leading-4 text-gray-600">Toplam ürün</p>
-                                    <p className="text-lg font-semibold leading-4 text-gray-600">2</p>
+                                    <p className="text-lg font-semibold leading-4 text-gray-600">{cartItems.length}</p>
                                 </div>
                                 <div className="flex justify-between w-full items-center">
                                     <p className="text-lg leading-4 text-gray-600">Alt Tutar</p>
-                                    <p className="text-lg font-semibold leading-4 text-gray-600">2790 TL</p>
+                                    <p className="text-lg font-semibold leading-4 text-gray-600">{(totalQuantity * 0.82).toFixed(2)} TL</p>
                                 </div>
                                 <div className="flex justify-between w-full items-center">
                                     <p className="text-lg leading-4 text-gray-600">KDV (%18)</p>
-                                    <p className="text-lg font-semibold leading-4 text-gray-600">90 TL</p>
+                                    <p className="text-lg font-semibold leading-4 text-gray-600">{(totalQuantity * 0.18).toFixed(2)} TL</p>
                                 </div>
                                 {/* <div className="flex justify-between w-full items-center">
                                     <p className="text-lg leading-4 text-gray-600">Toplam Tutar</p>
@@ -115,7 +116,7 @@ const checkout = () => {
                             </div>
                             <div className="flex justify-between w-full items-center mt-32">
                                 <p className="text-xl font-semibold leading-4 text-gray-800">Toplam Tutar </p>
-                                <p className="text-lg font-semibold leading-4 text-gray-800">2900 TL</p>
+                                <p className="text-lg font-semibold leading-4 text-gray-800">{totalQuantity.toFixed(2)} TL</p>
                             </div>
                         </div>
                     </div>
