@@ -1,5 +1,5 @@
 import FullScreenLoading from '@/components/FullScreenLoading'
-import Footer from '@/components/footer'
+import Footer from '@/components/Footer'
 import Header from '@/components/header'
 import { useAuth } from '@/hooks/useAuth'
 import { useCart } from '@/hooks/useCart'

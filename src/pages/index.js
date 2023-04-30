@@ -1,6 +1,6 @@
 import HomeCategoryList from '@/components/HomeCategoryList'
 import Product from '@/components/Product'
-import Footer from '@/components/footer'
+import Footer from '@/components/Footer'
 import Header from '@/components/header'
 import { getProducts } from '@/lib/queries/product'
 import { Inter } from 'next/font/google'

@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { useCart } from '@/hooks/useCart';
-import Footer from '@/components/footer';
+import Footer from '@/components/Footer';
 
 function App({ Component, pageProps }) {
   const { userId } = useAuth();

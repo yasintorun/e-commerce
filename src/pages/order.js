@@ -1,4 +1,4 @@
-import Footer from '@/components/footer'
+import Footer from '@/components/Footer'
 import Header from '@/components/header'
 import { getOrderById } from '@/lib/queries/order'
 import Link from 'next/link'
