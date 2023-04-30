@@ -2,6 +2,7 @@ import Footer from '@/components/Footer';
 import Header from '@/components/header';
 import { useAuth } from '@/hooks/useAuth';
 import { useCart } from '@/hooks/useCart';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef, useState } from 'react'
@@ -90,6 +91,9 @@ const checkout = () => {
 
     return (
         <>
+        <Head>
+            <title>Ödeme</title>
+        </Head>
             <Header />
             <div className="overflow-y-hidden">
                 <div className="flex justify-center items-center 2xl:container 2xl:mx-auto lg:py-16 md:py-12 py-9 px-4 md:px-6 lg:px-20 xl:px-44 ">

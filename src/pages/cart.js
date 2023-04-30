@@ -6,6 +6,7 @@ import { useCart } from '@/hooks/useCart'
 import Link from 'next/link'
 import React, { useMemo, useState } from 'react'
 import Swal from 'sweetalert2'
+import Head from 'next/head'
 
 const checkout = () => {
     const { cartItems, totalQuantity, fillCartItems } = useCart()
@@ -60,6 +61,9 @@ const checkout = () => {
 
     return (
         <>
+        <Head>
+            <title>Sepetim</title>
+        </Head>
             <FullScreenLoading loading={loading} />
             <Header />
             <main className='container m-auto border-t border-grey-dark pt-10 sm:pt-12'>
