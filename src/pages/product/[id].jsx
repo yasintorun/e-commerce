@@ -18,13 +18,13 @@ const ProductDetail = ({ product }) => {
 
                 <div className="mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center space-x-2 text-gray-400 text-sm">
-                        <Link href="/" className="hover:underline hover:text-gray-600">Ürünler</Link>
+                        <Link href="/product" className="hover:underline hover:text-gray-600">Ürünler</Link>
                         <span>
                             <svg className="h-5 w-5 leading-none text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
                             </svg>
                         </span>
-                        <Link href={"/?category=" + product.category.id} className="hover:underline hover:text-gray-600">{product.category.name}</Link>
+                        <Link href={"/product?category=" + product.category.id} className="hover:underline hover:text-gray-600">{product.category.name}</Link>
                     </div>
                 </div>
                 <section class="text-gray-700 body-font overflow-hidden bg-white">
