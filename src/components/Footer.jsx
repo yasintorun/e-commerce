@@ -19,7 +19,7 @@ const Footer = () => {
             </nav>
             <div className="flex justify-center mt-8 space-x-6">
             </div>
-            <p className="mt-8 leading-6 text-center text-gray-400">© 2023 Commerce. Tüm Hakları Saklıdır.</p>
+            <p className="mt-8 leading-6 text-center text-gray-400">© 2023 BarbarosMar. Tüm Hakları Saklıdır.</p>
             <span className="w-full m-o block text-center opacity-75">
             </span>
         </footer>
