@@ -1,12 +1,13 @@
 const { Sequelize } = require("sequelize");
-
+import mysql2 from 'mysql2';
 const sequelize = new Sequelize(
     'store',
     'yt2',
     'Q123asd987.!',
     {
         host: '45.200.120.178',
-        dialect: 'mysql'
+        dialect: 'mysql',
+        dialectModule: mysql2,
     }
 );
 
