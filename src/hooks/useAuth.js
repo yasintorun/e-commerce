@@ -1,15 +1,16 @@
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export const useAuth = () => {
     const [userId, setUserId] = useState();
+    const {data: session, status} = useSession();
     useEffect(() => {
-        let userId = localStorage.getItem('userId');
-        if (!userId) {
-            userId = Date.now() % 10000;
-            localStorage.setItem('userId', userId);
+        if(!session) {
+            setUserId(null);
+            return;
         }
-        setUserId(typeof userId == "string" ? parseInt(userId) : userId);
-    }, [])
+        setUserId(session.user.id);
+    }, [session])
     return {
         userId
     }

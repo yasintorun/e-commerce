@@ -16,13 +16,13 @@ function App({
   Component,
   pageProps: {session, ...pageProps}
 }) {
-  const { userId } = useAuth();
-  const { fillCartItems } = useCart();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    if (!userId) return;
-    fillCartItems();
-  }, [userId]);
+  // const { userId } = useAuth();
+  // const { fillCartItems } = useCart();
+  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   if (!userId) return;
+  //   fillCartItems();
+  // }, [userId]);
 
   return (
     <SessionProvider session={session}>

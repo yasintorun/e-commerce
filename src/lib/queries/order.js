@@ -1,4 +1,5 @@
 import OrderModel from "../models/order"
+import { ProductModel } from "../models/product";
 import { deleteAllCartItems } from "./cart";
 
 export const payOrder = async ({userId, address, amount}) => {
@@ -16,4 +17,13 @@ export const payOrder = async ({userId, address, amount}) => {
 export const getOrderById = async (id) => {
 const order = await OrderModel.findByPk(id);
     return order.toJSON();
+}
+
+export const getOrdersByUserId = async (userId) => {
+    const orders = await OrderModel.findAll({
+        where: {
+            customerId: userId
+        }
+    })
+    return orders.map(order => order.toJSON());
 }

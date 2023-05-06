@@ -1,11 +1,12 @@
 import Footer from '@/components/Footer'
 import Header from '@/components/header'
-import { useSession } from 'next-auth/react'
+import { getOrdersByUserId } from '@/lib/queries/order'
+import { getProviders, getSession, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
-const profile = () => {
+const profile = ({ orders }) => {
     const { data: session, status } = useSession()
     const [showDetail, setShowDetail] = React.useState(0)
     const router = useRouter()
@@ -14,6 +15,12 @@ const profile = () => {
             router.push("/auth/signin")
         }
     }, [session])
+
+    const totalOrderAmount = useMemo(() => orders.reduce((acc, order) => acc + order.amount, 0), [orders])
+
+    const getOrderProducts = (order) => {
+        
+    }
 
     return (
         <>
@@ -33,7 +40,7 @@ const profile = () => {
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                                 </div>
                                 <div className="stat-title">Toplam Sipariş</div>
-                                <div className="stat-value">25</div>
+                                <div className="stat-value">{orders.length}</div>
                             </div>
 
                             <div className="stat">
@@ -41,7 +48,9 @@ const profile = () => {
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                                 </div>
                                 <div className="stat-title">Toplam Harcanan Tutar</div>
-                                <div className="stat-value">2654 TL</div>
+                                <div className="stat-value">
+                                    {totalOrderAmount} TL
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -64,29 +73,33 @@ const profile = () => {
                                                         TOPLAM TUTAR
                                                     </th>
                                                     <th scope='col' className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                                                        İŞLEM
+                                                        DURUM
                                                     </th>
                                                 </tr>
                                             </thead>
                                             <tbody className='bg-white divide-y divide-gray-200'>
-                                                <>
+                                                {orders?.map(order => (
+
                                                     <tr>
                                                         <td className='px-6 py-4 whitespace-nowrap'>
-                                                            <div className='text-sm text-gray-900'>1</div>
+                                                            <div className='text-sm text-gray-900'>{order.id}</div>
                                                         </td>
                                                         <td className='px-6 py-4 whitespace-nowrap'>
-                                                            <div className='text-sm text-gray-900'>2</div>
+                                                            <div className='text-sm text-gray-900'>{order.date?.toLocaleString()}</div>
                                                         </td>
                                                         <td className='px-6 py-4 whitespace-nowrap'>
-                                                            <div className='text-sm text-gray-900'>3</div>
+                                                            <div className='text-sm text-gray-900'>{order.amount} TL</div>
                                                         </td>
                                                         <td className='px-6 py-4 whitespace-nowrap'>
-                                                            <button className='btn btn-success btn-xs' onClick={() => setShowDetail(showDetail == 1 ? 0 : 1)}>
+                                                            <div className='badge bg-orange-500 border-0 text-white'>
+                                                                Hazırlanıyor
+                                                            </div>
+                                                            {/* <button className='btn btn-success btn-xs' onClick={() => setShowDetail(showDetail == 1 ? 0 : 1)}>
                                                                 {showDetail == 1 ? "ÜRÜNLERİ GİZLE" : "ÜRÜNLERİ GÖSTER"}
-                                                            </button>
+                                                            </button> */}
                                                         </td>
                                                     </tr>
-                                                </>
+                                                ))}
                                             </tbody>
                                         </table>
                                     </div>
@@ -94,7 +107,7 @@ const profile = () => {
                             </div>
                         </div>
                     </div>
-                    {!!showDetail && (
+                    {/* {!!showDetail && (
                         <div className='my-10'>
                             <h2 className='text-xl font-bold mb-4 flex items-end justify-between'>
                                 Sipariş Detayı - 1
@@ -149,9 +162,9 @@ const profile = () => {
                                 </div>
                             </div>
                         </div>
-                    )}
+                    )} */}
                 </div>
-            </main>
+            </main >
             <Footer />
         </>
     )
@@ -159,3 +172,19 @@ const profile = () => {
 
 export default profile
 
+
+export async function getServerSideProps(context) {
+    const { req } = context;
+    const session = await getSession({ req });
+    if (!session) {
+        return {
+            redirect: { destination: "/auth/signin" },
+        };
+    }
+    const orders = await getOrdersByUserId(session.user.id)
+    return {
+        props: {
+            orders
+        },
+    }
+}

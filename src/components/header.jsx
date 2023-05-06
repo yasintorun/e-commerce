@@ -1,11 +1,29 @@
 import { useCart } from '@/hooks/useCart'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
+import Swal from 'sweetalert2'
 
 const Header = () => {
     const { cartItems } = useCart()
     const { data: session } = useSession()
+
+    const handleLogout = () => {
+        Swal.fire({
+            title: "Çıkış Yapılsın mı?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Evet",
+            cancelButtonText: "Hayır",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                signOut()
+            }
+        })
+    }
+
     return (
         <nav id="header" className="w-full sticky z-50 top-0 py-1">
             <div className="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-6 py-3">
@@ -39,13 +57,30 @@ const Header = () => {
 
                 <div className="order-2 md:order-3 flex items-center" id="nav-content">
 
-                    <Link className="flex items-center no-underline hover:text-black" href={session ? "/profile" : "/auth/signin"}>
-                        <svg className="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <circle fill="none" cx="12" cy="7" r="3" />
-                            <path d="M12 2C9.243 2 7 4.243 7 7s2.243 5 5 5 5-2.243 5-5S14.757 2 12 2zM12 10c-1.654 0-3-1.346-3-3s1.346-3 3-3 3 1.346 3 3S13.654 10 12 10zM21 21v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h2v-1c0-2.757 2.243-5 5-5h4c2.757 0 5 2.243 5 5v1H21z" />
-                        </svg>
-                        {session ? session.user.name : "Giriş Yap"}
-                    </Link>
+                    <div className="dropdown">
+                        <label tabIndex={0} className="btn btn-ghost btn-sm m-1">
+                            <svg className="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                <circle fill="none" cx="12" cy="7" r="3" />
+                                <path d="M12 2C9.243 2 7 4.243 7 7s2.243 5 5 5 5-2.243 5-5S14.757 2 12 2zM12 10c-1.654 0-3-1.346-3-3s1.346-3 3-3 3 1.346 3 3S13.654 10 12 10zM21 21v-1c0-3.859-3.141-7-7-7h-4c-3.86 0-7 3.141-7 7v1h2v-1c0-2.757 2.243-5 5-5h4c2.757 0 5 2.243 5 5v1H21z" />
+                            </svg>
+
+                            {session ? session.user.name : "Giriş Yap"}
+                        </label>
+                        <ul tabIndex={0} className="dropdown-content space-y-2 menu p-2 shadow bg-base-100 rounded-box w-52">
+                            {session ? (
+                                <>
+                                    <li><Link href={"/profile"} className=''>Profil</Link></li>
+                                    <li><Link href={"/profile"} className=''>Siparişlerim</Link></li>
+                                    <li><Link href="#" onClick={handleLogout} className='btn-error'>Çıkış Yap</Link></li>
+                                </>
+                            ) : (
+                                <>
+                                    <li><Link href={"/auth/signin"} className=''>Giriş Yap</Link></li>
+                                    <li><Link href={"/auth/signup"} className=''>Üye Ol</Link></li>
+                                </>
+                            )}
+                        </ul>
+                    </div>
 
                     <Link href="/cart" className="relative pl-3 inline-block no-underline hover:text-black">
                         <svg className="fill-current hover:text-black" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -65,7 +100,7 @@ const Header = () => {
 
                 </div>
             </div>
-        </nav>
+        </nav >
     )
 }
 

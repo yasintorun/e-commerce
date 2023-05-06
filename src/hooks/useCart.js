@@ -2,17 +2,28 @@ import { addToCartAction, setCartItemsAction } from "@/store/cartStore";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "./useAuth";
 import { toast } from "react-toastify";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { useSession } from "next-auth/react";
 
 export const useCart = () => {
     const { cartItems } = useSelector(state => state.cart)
     const { userId } = useAuth();
+    const { data: session } = useSession();
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        if (!session) return;
+        fillCartItems()
+    }, [session])
+
     const addToCart = async (productId) => {
+        if (!session) {
+            toast.error("Lütfen giriş yapınız");
+            return;
+        }
         const fetchPromise = fetch("/api/cart/", {
             body: JSON.stringify({
-                userId,
+                userId: session.user.id,
                 productId,
             }),
             method: "POST",
@@ -28,7 +39,7 @@ export const useCart = () => {
         }, { autoClose: 1500 })
     }
     const fillCartItems = async () => {
-        await fetch("/api/cart?userId=" + userId)
+        await fetch("/api/cart?userId=" + session.user.id)
             .then(res => res.json())
             .then(cartItems => {
                 dispatch(setCartItemsAction(cartItems));
