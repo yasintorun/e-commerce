@@ -9,9 +9,9 @@ const order = ({ order }) => {
     console.log(order)
     return order && (
         <>
-        <Head>
-            <title>Sipariş Detayı</title>
-        </Head>
+            <Head>
+                <title>Sipariş Detayı</title>
+            </Head>
             <Header />
             <div class="max-w-md mx-auto mt-10">
                 <div class="bg-white shadow-md rounded-md px-6 py-8">
@@ -32,7 +32,10 @@ const order = ({ order }) => {
                         <p class="text-gray-500">Toplam Tutar:</p>
                         <p class="font-medium">{order?.amount?.toFixed(2)} TL</p>
                     </div>
-                    <Link href="/" class="mt-6 block text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-md">Anasayfa'ya Dön</Link>
+                    <Link href="/profile" class="w-full  btn btn-success">Siparişlerim</Link>
+                    <div className='flex justify-center my-5'>
+                        <Link href="/" class="btn btn-ghost underline btn-xs text-center ">Anasayfaya Dön</Link>
+                    </div>
                 </div>
             </div>
             <Footer />
