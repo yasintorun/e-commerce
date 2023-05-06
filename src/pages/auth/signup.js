@@ -1,15 +1,10 @@
+import { getProviders, getSession } from 'next-auth/react'
 import Head from 'next/head'
 import Link from 'next/link'
 
 const Signup = () => {
     return (
         <>
-            <Head>
-                <title>KodChallenge Topluluğuna Katıl</title>
-                <meta name="description" content="KodChallenge, Türkçe programlama topluluğudur. Topluluğumuzda sizide aramızda görmekten gurur duyarız." />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
             <div className='w-full overflow-auto'>
                 <div className='min-h-screen w-full flex items-center p-5 justify-center flex-col space-y-2'>
                     <div className=" w-full p-2 sm:p-5 sm:max-w-md lg:max-w-lg md:4/5 bg-base-100 shadow-2xl">
@@ -47,6 +42,9 @@ const Signup = () => {
                                 Hesabınız var mı? {"  "}
                                 <Link href={"/auth/signin"} className="text-center underline text-sm hover:text-red-300">Giriş Yap</Link>
                             </p>
+                            <p className='m-5'>
+                                <Link href={"/"} className="text-center underline text-sm hover:text-red-300">Anasayfaya Geri Dön</Link>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -56,3 +54,19 @@ const Signup = () => {
 }
 
 export default Signup
+
+export async function getServerSideProps(context) {
+    const { req } = context;
+    const session = await getSession({ req });
+    const providers = await getProviders()
+    if (session) {
+        return {
+            redirect: { destination: "/" },
+        };
+    }
+    return {
+        props: {
+            providers,
+        },
+    }
+}
