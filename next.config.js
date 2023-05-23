@@ -3,12 +3,12 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     swcPlugins: [
-      [
-        'next-superjson-plugin',
-        {
-          excluded: [],
-        },
-      ],
+      // [
+      //   'next-superjson-plugin',
+      //   {
+      //     excluded: [],
+      //   },
+      // ],
     ],
   },
 }
