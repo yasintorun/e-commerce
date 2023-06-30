@@ -1,5 +1,5 @@
 import React from 'react'
-
+import {version} from '../../package.json'
 const Footer = () => {
     return (
         <footer className="max-w-screen-xl px-4 py-12 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8 tails-selected-element">
@@ -21,6 +21,7 @@ const Footer = () => {
             </div>
             <p className="mt-8 leading-6 text-center text-gray-400">© 2023 BarbarosMar. Tüm Hakları Saklıdır.</p>
             <span className="w-full m-o block text-center opacity-75">
+                v{version}
             </span>
         </footer>
     )
